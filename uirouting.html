@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="uirouting.css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+</head>
+<body ng-app="myApp">
+<div>
+ <a ui-sref="root">HOME</a> |
+
+<a ui-Sref="first-msg">FIRST MESSAGE</a> |
+<a ui-Sref="second-msg">SECOND MESSAGE</a>
+</div>
+<div ui-view></div>
+<div ui-view="view1" ></div>
+<!--for multiple named views <div ui-view="view2" ></div>-->
+
+<script>
+    var app= angular.module('myApp',['ui.router']);
+    app.config(function($stateProvider, $urlRouterProvider){
+       $stateProvider
+           .state('first-msg', {
+               url: '/firstmsg',
+               views: {
+                   "view1" : {
+                       templateUrl: 'msg1.html',
+                       controller: 'mycontroller'
+                   },
+                   // "view2" for multiple named views
+                   "view2@first-msg" : {
+                       template: '<h1 style="margin-left: 500px; color: #2a6496">VIEW2</h1>',
+                       controller: 'mycontroller'
+                   }
+               }
+           })
+           .state('second-msg', {
+               url:'/secondmsg',
+               templateUrl: 'msg2.html',
+               controller: 'mycontroller0'
+
+           })
+
+           .state('root', {
+               url: '/',
+               template:"<h1>YOU R IN ROOT</h1>",
+
+           });
+
+           $urlRouterProvider.otherwise('/');
+
+
+    });
+
+    app.controller('mycontroller',function($scope){
+         $scope.a=10;
+         $scope.b=20;
+    });
+
+    app.controller('mycontroller0',function($scope){
+        $scope.c=20;
+        $scope.d=40;
+    });
+</script>
+</body>
+</html>

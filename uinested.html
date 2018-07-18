@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="uirouting.css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+</head>
+<body ng-app="myApp">
+<div>
+    <a ui-sref="root">HOME</a> |
+    <a ui-Sref="first-msg">FIRST MESSAGE</a> |
+    <a ui-Sref="second-msg">SECOND MESSAGE</a>
+
+</div>
+<div ui-view></div>
+<div ui-view="state1" ></div>
+<div ui-view="state2" ></div>
+<script>
+    var app= angular.module('myApp',['ui.router']);
+    app.config(function($stateProvider, $urlRouterProvider){
+        $stateProvider
+            .state('first-msg', {
+                url: '/firstmsg',
+                template: '<h1>Route 1</h1>\n' +
+                '<hr/>\n' +
+                '<a ui-sref="state1-list">Show List</a>\n' +
+                '<div ui-view></div>',
+
+            })
+
+            .state('state1-list', {
+                url: "/list",
+                templateUrl: "list.html",
+                controller: function($scope) {
+                    $scope.items = ["A", "List", "Of", "Items"];
+                }
+            })
+
+            .state('second-msg', {
+                url:'/secondmsg',
+                template:'<h1>Route 2</h1>\n' +
+                '<hr/>\n' +
+                '<a ui-sref="state2-list">Show List</a>\n' +
+                '<div ui-view></div>',
+
+            })
+
+            .state('state2-list', {
+                url: "/list",
+                templateUrl: "list.html",
+                controller: function($scope){
+                    $scope.items = ["A", "Set", "Of", "Things"];
+                }
+            })
+
+
+
+            .state('root', {
+                url: '/',
+                template:"<h1>YOU R IN ROOT</h1>",
+
+            });
+
+        $urlRouterProvider.otherwise('/');
+
+
+    });
+
+    app.controller('mycontroller',function($scope){
+        $scope.a=10;
+        $scope.b=20;
+    });
+
+    app.controller('mycontroller0',function($scope){
+        $scope.c=20;
+        $scope.d=40;
+    });
+</script>
+</body>
+</html>
